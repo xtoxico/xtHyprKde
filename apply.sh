@@ -4,73 +4,101 @@ set -e
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "=========================================================="
-echo "          xtHyprKde - Applying Hyprland Aesthetic        "
+echo "          xtHyprKde - Applying Full Hyprland Setup       "
 echo "=========================================================="
 
 # 1. Colorscheme
-echo "==> [1/7] Installing and applying color scheme (xtHyprDark)..."
+echo "==> [1/10] Applying color scheme (xtHyprDark)..."
 mkdir -p "$HOME/.local/share/color-schemes"
 cp "$REPO_DIR/configs/color-schemes/xtHyprDark.colors" "$HOME/.local/share/color-schemes/"
 plasma-apply-colorscheme xtHyprDark || true
 
-# 2. Icons & Cursors
-echo "==> [2/7] Configuring icons and cursors..."
-kwriteconfig6 --file kdeglobals --group Icons --key Theme "Papirus-Dark"
-plasma-apply-cursortheme breeze_cursors 2>/dev/null || true
+# 2. Fonts (Inter + JetBrains Mono Nerd Font)
+echo "==> [2/10] Applying typography (Inter + JetBrains Mono)..."
+if [ -d "$HOME/.local/share/fonts/Inter" ]; then
+    kwriteconfig6 --file kdeglobals --group General --key font "Inter,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key fixed "JetBrainsMono Nerd Font,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key smallestReadableFont "Inter,8,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key toolBarFont "Inter,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key menuFont "Inter,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group WM --key activeFont "Inter,10,-1,5,75,0,0,0,0,0"
+fi
 
-# 3. Konsole
-echo "==> [3/7] Setting up Konsole (frosted blur & transparent)..."
+# 3. Icons & Cursors
+echo "==> [3/10] Configuring Papirus-Dark and Bibata cursor..."
+kwriteconfig6 --file kdeglobals --group Icons --key Theme "Papirus-Dark"
+if [ -d "$HOME/.local/share/icons/Bibata-Modern-Ice" ] || [ -d "$HOME/.icons/Bibata-Modern-Ice" ]; then
+    plasma-apply-cursortheme Bibata-Modern-Ice 2>/dev/null || true
+fi
+
+# 4. Konsole & Starship
+echo "==> [4/10] Setting up Konsole (frosted blur) & Starship prompt..."
 mkdir -p "$HOME/.local/share/konsole"
 cp "$REPO_DIR/configs/konsole/xtHypr.colorscheme" "$HOME/.local/share/konsole/"
 cp "$REPO_DIR/configs/konsole/xtHypr.profile" "$HOME/.local/share/konsole/"
 kwriteconfig6 --file konsolerc --group "Desktop Entry" --key DefaultProfile "xtHypr.profile"
+if [ -f "$REPO_DIR/configs/starship/starship.toml" ]; then
+    cp "$REPO_DIR/configs/starship/starship.toml" "$HOME/.config/"
+fi
 
-# 4. KRunner (Rofi / Spotlight centered floating launcher)
-echo "==> [4/7] Configuring KRunner (centered floating launcher)..."
+# 5. KRunner (Spotlight centered mode on Alt+Space) & Launcher on Meta
+echo "==> [5/10] Configuring dual launchers (KRunner centered + Meta key)..."
 kwriteconfig6 --file krunnerrc --group General --key FreeFloating true
 kwriteconfig6 --file krunnerrc --group General --key historyEnabled true
 kwriteconfig6 --file krunnerrc --group General --key retainPriorSearch false
+kwriteconfig6 --file kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
 
-# 5. KWin compositor & effects (Blur, Speed, Borders)
-echo "==> [5/7] Tuning KWin compositor (Hypr-speed animations & deep blur)..."
+# 6. KWin rules: Border-Only windows (no bulky titlebars)
+echo "==> [6/10] Setting up Border-Only window rules..."
+if [ -f "$REPO_DIR/configs/kwin/kwinrulesrc" ]; then
+    cp "$REPO_DIR/configs/kwin/kwinrulesrc" "$HOME/.config/kwinrulesrc"
+fi
+kwriteconfig6 --file kwinrc --group Windows --key BorderlessMaximizedWindows true
+kwriteconfig6 --file kwinrc --group MouseBindings --key CommandAllKey Meta
+kwriteconfig6 --file kwinrc --group MouseBindings --key CommandAll1 Move
+kwriteconfig6 --file kwinrc --group MouseBindings --key CommandAll3 Resize
+
+# 7. KWin Compositor & Effects (Dim inactive, fast speed, blur)
+echo "==> [7/10] Tuning KWin compositor (dim inactive, fast animations, blur)..."
 kwriteconfig6 --file kwinrc --group Plugins --key blurEnabled true
 kwriteconfig6 --file kwinrc --group Plugins --key contrastEnabled true
+kwriteconfig6 --file kwinrc --group Plugins --key diminactiveEnabled true
 kwriteconfig6 --file kwinrc --group Effect-blur --key BlurStrength 12
 kwriteconfig6 --file kwinrc --group Effect-blur --key NoiseStrength 0
+kwriteconfig6 --file kwinrc --group Effect-diminactive --key DimBy 15
 kwriteconfig6 --file kwinrc --group KDE --key AnimationDurationFactor 0.5
-kwriteconfig6 --file kwinrc --group Windows --key BorderlessMaximizedWindows true
 
-# Window decorations (Check for Klassy, fallback to clean Breeze)
-if pacman -Qq klassy-bin >/dev/null 2>&1 || pacman -Qq klassy >/dev/null 2>&1; then
-    echo "  [+] Klassy detected: applying Klassy window decoration..."
-    kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key library "org.kde.klassy"
-    kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key theme "klassy"
-    if [ -f "$REPO_DIR/configs/klassy/klassyrc" ]; then
-        cp "$REPO_DIR/configs/klassy/klassyrc" "$HOME/.config/"
-    fi
-else
-    echo "  [+] Setting up clean Breeze (border-focused, no legacy Aurorae glitches)..."
-    kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key library "org.kde.breeze"
-    kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key theme "Breeze"
-    kwriteconfig6 --file breezerc --group Windeco --key ButtonSize "ButtonSmall"
-    kwriteconfig6 --file breezerc --group Windeco --key DrawBackgroundGradient false
-    kwriteconfig6 --file breezerc --group Windeco --key DrawSeparator false
-    kwriteconfig6 --file breezerc --group Common --key OutlineCloseButton false
-    kwriteconfig6 --file breezerc --group Common --key ShadowStrength 180
-fi
+# 8. Shortcuts: Meta+Q to close window & quick tile corner keys
+echo "==> [8/10] Configuring Hyprland-style shortcuts (Meta+Q to close, Meta+Arrows to tile)..."
+sed -i 's/Window Close=.*/Window Close=Alt+F4\tMeta+Q,Alt+F4,Cerrar la ventana/' "$HOME/.config/kglobalshortcutsrc" 2>/dev/null || true
 
-# 6. Wallpaper
-echo "==> [6/7] Applying high-res dark neon wallpaper..."
+# 9. Panels: Floating Top Bar + Minimal Auto-Hide Bottom Dock
+echo "==> [9/10] Applying clean panel layout (Top bar + Auto-hide minimal bottom dock)..."
+qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
+var p = panels();
+for (var i = 0; i < p.length; i++) {
+    if (p[i].location === 'bottom') {
+        p[i].hiding = 'autohide';
+        p[i].height = 42;
+    } else if (p[i].location === 'top') {
+        p[i].height = 32;
+        p[i].floating = true;
+    }
+}
+" 2>/dev/null || true
+
+# Set Arch logo on launcher
+kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc --group Containments --group 212 --group Applets --group 213 --group Configuration --group General --key icon "distributor-logo-archlinux" 2>/dev/null || true
+
+# 10. Wallpaper
+echo "==> [10/10] Applying 4K dark neon wallpaper..."
 bash "$REPO_DIR/scripts/set_wallpaper.sh" "$REPO_DIR/assets/wallpapers/xtHypr_neon.png"
 
-# 7. Reload KWin
-echo "==> [7/7] Reloading KWin window manager..."
+# Reload KWin
+echo "==> Reloading KWin and Plasma..."
 qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null || true
 
 echo ""
 echo "=========================================================="
-echo "          ✓ xtHyprKde theme applied successfully!        "
+echo "          ✓ xtHyprKde customized and applied!             "
 echo "=========================================================="
-echo "Tip: Press Alt + Space to launch KRunner (centered Rofi style)."
-echo "Tip: Open Konsole to enjoy the frosted glass transparent terminal."
-echo "Tip: Run ./scripts/restore.sh if you ever want to revert."

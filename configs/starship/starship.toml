@@ -1,0 +1,34 @@
+# Starship configuration for xtHyprKde
+add_newline = false
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+style = "bold #00f5d4"
+format = "[$path]($style) "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "bold #cba6f7"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "bold #f38ba8"
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+min_time = 2_000
+style = "yellow"
+format = "took [$duration]($style) "
+
+[character]
+success_symbol = "[❯](bold #00f5d4)"
+error_symbol = "[❯](bold #f38ba8)"

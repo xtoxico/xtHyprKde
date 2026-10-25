@@ -1,7 +1,7 @@
 # xtHyprKde 🌌
 
 > **Hyprland aesthetic meets KDE Plasma 6 stability.**  
-> A clean, modern, dark cyber-neon rice for KDE Plasma 6 on Wayland (Arch Linux).
+> A customized, modern, dark cyber-neon rice for KDE Plasma 6 on Wayland (Arch Linux).
 
 [![KDE Plasma](https://img.shields.io/badge/KDE_Plasma-6.x-blue?logo=kde)](https://kde.org)
 [![Wayland](https://img.shields.io/badge/Display_Server-Wayland-brightgreen)](https://wayland.freedesktop.org/)
@@ -12,101 +12,82 @@
 
 ## ✨ Overview
 
-Do you love the minimalist, glowing aesthetic of modern Wayland tiling window managers like **Hyprland** (thin glowing borders, deep frosted glass blur, floating pill bars, centered floating launchers, snappy animations), but prefer the day-to-day stability, multi-monitor handling, and full desktop features of **KDE Plasma 6**?
-
-**xtHyprKde** bridges that gap. It replaces legacy, glitchy Aurorae themes with a native, hardware-accelerated configuration tailored specifically for **Plasma 6 Wayland**.
+**xtHyprKde** transforms KDE Plasma 6 into a sleek, minimalist desktop inspired by modern Wayland tiling environments like **Hyprland**, eliminating clunky legacy skins and redundant bars while keeping 100% of KDE's daily stability.
 
 ---
 
-## 🎨 Features
+## 🎨 Configuration & Architecture
 
-* **`xtHyprDark` Color Scheme**: A carefully crafted dark palette inspired by *Catppuccin Mocha* and *Tokyo Night* with vibrant neon cyan (`#00f5d4`) and electric mauve accents.
-* **Glitches-Free Window Decorations**:
-  * Clean vector styling (no pixelated legacy Aurorae skins).
-  * Rounded window corners and subtle borders.
-  * Native Klassy support with colored active window outlines.
-  * Borderless maximized windows.
-* **Frosted Glass Terminal (`Konsole`)**:
-  * 85% opacity with deep Gaussian blur.
-  * JetBrains Mono Nerd Font support.
-  * Hidden scrollbars for a clean Kitty/Alacritty look.
-* **Rofi-Style Centered Launcher**:
-  * KRunner configured as a centered, floating search bar with background blur.
-* **Snappy Hyprland Animations**:
-  * KWin animation duration tuned to `0.5x` for instantaneous transitions.
-  * Deep blur filter (`BlurStrength=12`, `NoiseStrength=0`).
-* **Minimalist 4K Neon Wallpaper**:
-  * Included high-res dark neon wallpaper (`assets/wallpapers/xtHypr_neon.png`).
-* **Safety First**:
-  * Automatic backup of your existing configs before applying.
-  * One-click restore script (`./scripts/restore.sh`).
+### 1. Panel Layout (Top Bar + Minimal Auto-Hide Dock)
+* **Top Bar (Floating Pill)**:
+  * Sleek 32px floating top bar with rounded corners.
+  * Left: Minimalist Arch Linux launcher icon (`Meta` key shortcut).
+  * Center: Clean Digital Clock (`HH:mm · ddd, D MMM`).
+  * Right: Discreet system tray (audio volume, network, notifications).
+* **Bottom Dock (Auto-Hidden)**:
+  * Compact 42px application dock that **completely disappears** when not in use (`autohide`).
+  * Never interferes with active windows; only slides up when moving the cursor to the bottom screen edge.
+
+### 2. Dual Launcher System
+* **`Alt + Space`**: Centered floating **KRunner** with deep blur (Spotlight / Rofi mode) for instant search, math, translation, and file browsing.
+* **`Meta` (Super)**: Triggers the clean top-left application launcher.
+
+### 3. Window Aesthetics & Border-Only Look
+* **Zero Bulky Titlebars**: Native KWin rule renders windows in clean **Border-Only** mode with rounded corners.
+* **Glowing Active Borders**: The active window is subtly outlined with neon cyan (`#00f5d4`).
+* **Dim Inactive Windows**: Inactive windows are automatically dimmed by 15% to visually focus your active workflow.
+* **Wayland Drag Gesture**: Hold `Meta` + Left Click anywhere on a window to drag/move; hold `Meta` + Right Click to resize.
+
+### 4. Typography & Styling
+* **UI Font**: **Inter** (10pt) for clean, high-legibility menus and text.
+* **Code / Monospace**: **JetBrains Mono Nerd Font** (10pt).
+* **Cursors**: **Bibata Modern Ice** (rounded material aesthetic).
+* **Icons**: **Papirus-Dark**.
+
+### 5. Terminal & Shell
+* **Konsole**: 85% opacity with Gaussian background blur, no scrollbar clutter.
+* **Starship Prompt**: Minimalist prompt with directory path, git status, command duration, and cyan `❯` character.
 
 ---
 
-## 🚀 Quick Start
+## ⌨️ Shortcuts Reference
 
-### 1. Clone the repository
+| Shortcut | Action |
+| :--- | :--- |
+| **`Meta + Q`** | Close active window (Hyprland / i3 style) |
+| **`Alt + Space`** | Centered Launcher (Rofi / Spotlight search) |
+| **`Meta`** | Open Application Menu |
+| **`Meta + Left / Right`** | Tile window to Left / Right half |
+| **`Meta + Up / Down`** | Maximize / Restore window |
+| **`Meta + Shift + Arrows`** | Tile window to Screen Corners (quarters) |
+| **`Meta + T`** | Interactive Tiling Layout Editor (Plasma 6) |
+| **`Meta + Left Click Drag`** | Move window from anywhere |
+| **`Meta + Right Click Drag`**| Resize window from anywhere |
 
+---
+
+## 🚀 Installation & Management
+
+### Quick Apply
 ```bash
-git clone https://github.com/xtoxico/xtHyprKde.git ~/workspace/xtHyprKde
 cd ~/workspace/xtHyprKde
+./apply.sh
 ```
 
-### 2. Run the Installer
-
+### Full Reinstall / Setup
 ```bash
 ./install.sh
 ```
 
-The installer will:
-1. Verify essential packages (`papirus-icon-theme`, `ttf-jetbrains-mono-nerd`).
-2. Offer to install `klassy-bin` from AUR for custom glowing outlines (optional).
-3. Create a safety backup in `~/.config/xtHyprKde-backups/`.
-4. Apply all color schemes, konsole profiles, KWin effects, and wallpapers.
-
----
-
-## 🔄 Re-applying or Reverting
-
-* **Quick re-apply** (without package checks):
-  ```bash
-  ./apply.sh
-  ```
-
-* **One-click restore** (reverts your desktop to the backup taken before install):
-  ```bash
-  ./scripts/restore.sh
-  ```
-
----
-
-## 🛠 Recommended Waybar-Style Floating Top Bar
-
-To complete the Hyprland look with your Plasma panel:
-
-1. Right-click your top panel → **Edit Panel...** (Modificar panel).
-2. Set **Floating Panel** to **ON** (Panel flotante).
-3. Set panel height to **32px - 36px**.
-4. Widgets order:
-   * **Left:** `Pager` (Paginador de escritorios) configured with numbers (`1`, `2`, `3`).
-   * **Spacer:** (Expanding spacer / Separador expandible).
-   * **Center:** Minimalist `Digital Clock` (formato: `HH:mm · ddd D`).
-   * **Spacer:** (Expanding spacer).
-   * **Right:** Minimal `System Tray` (Bandeja del sistema).
-
----
-
-## ⌨️ Useful Shortcuts
-
-| Action | Shortcut |
-| :--- | :--- |
-| **Centered Launcher (Rofi style)** | `Alt + Space` |
-| **Workspaces / Windows Overview** | `Meta` (Super) |
-| **Interactive Tiling Layout Editor** | `Meta + T` |
-| **Snap window to tiling zones** | `Shift + Drag window` |
+### Safety Backup & Restore
+Before applying changes, a full backup is automatically created in `~/.config/xtHyprKde-backups/`.  
+To restore at any time:
+```bash
+./scripts/restore.sh
+```
 
 ---
 
 ## 📄 License
 
-This project is open-source under the [MIT License](LICENSE).
+Open-source under the [MIT License](LICENSE).
