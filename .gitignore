@@ -1,0 +1,9 @@
+# OS / Cache files
+.DS_Store
+*.swp
+*~
+__pycache__/
+
+# Backups
+*.bak
+*.old

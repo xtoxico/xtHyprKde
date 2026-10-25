@@ -1,0 +1,15 @@
+[Common]
+RoundBottomCorners=true
+CornerRadius=10
+ShadowStrength=180
+ShadowSize=ShadowLarge
+
+[Windeco]
+ButtonSize=ButtonSmall
+DrawBackgroundGradient=false
+DrawTitleBar=true
+DrawSeparator=false
+ThinTitleBar=true
+ActiveBorderColor=0,245,212
+InactiveBorderColor=49,50,68
+BorderWidth=2
