@@ -12,7 +12,7 @@
 
 ## ✨ Overview
 
-**xtHyprKde** transforms KDE Plasma 6 into a sleek, minimalist desktop inspired by modern Wayland tiling environments like **Hyprland**, eliminating clunky legacy skins and redundant bars while keeping 100% of KDE's daily stability.
+**xtHyprKde** transforms KDE Plasma 6 into a sleek, minimalist desktop inspired by modern Wayland tiling environments like **Hyprland**, eliminating clunky legacy skins and redundant bars while keeping 100% of KDE's daily usability and mouse flexibility.
 
 ---
 
@@ -32,37 +32,27 @@
 * **`Alt + Space`**: Centered floating **KRunner** with deep blur (Spotlight / Rofi mode) for instant search, math, translation, and file browsing.
 * **`Meta` (Super)**: Triggers the clean top-left application launcher.
 
-### 3. Window Aesthetics & Border-Only Look
-* **Zero Bulky Titlebars**: Native KWin rule renders windows in clean **Border-Only** mode with rounded corners.
-* **Glowing Active Borders**: The active window is subtly outlined with neon cyan (`#00f5d4`).
+### 3. Window Aesthetics & Slim Titlebars
+* **Slim Compact Titlebars**: Ultra-compact titlebar height (around 22px) with small minimalist buttons.
+* **Easy Mouse Window Management**: Click and drag by the top bar to move windows anywhere; maximize on double-click.
 * **Dim Inactive Windows**: Inactive windows are automatically dimmed by 15% to visually focus your active workflow.
-* **Wayland Drag Gesture**: Hold `Meta` + Left Click anywhere on a window to drag/move; hold `Meta` + Right Click to resize.
+* **Borderless Maximized**: Maximized windows hide the titlebar automatically for maximum workspace.
 
-### 4. Typography & Styling
-* **UI Font**: **Inter** (10pt) for clean, high-legibility menus and text.
+### 4. Tiling & Shortcuts
+* **`Meta + Left / Right`**: Snap window to Left / Right half with gaps.
+* **`Meta + Shift + Arrows`**: Snap window to Corners (screen quarters).
+* **`Meta + Q`**: Quick close active window.
+* **`Meta + T`**: Interactive Plasma 6 Tiling layout editor.
+
+### 5. Typography & Styling
+* **UI Font**: **Inter** (10pt, titlebar 9pt) for clean, high-legibility menus and text.
 * **Code / Monospace**: **JetBrains Mono Nerd Font** (10pt).
 * **Cursors**: **Bibata Modern Ice** (rounded material aesthetic).
 * **Icons**: **Papirus-Dark**.
 
-### 5. Terminal & Shell
+### 6. Terminal & Shell
 * **Konsole**: 85% opacity with Gaussian background blur, no scrollbar clutter.
 * **Starship Prompt**: Minimalist prompt with directory path, git status, command duration, and cyan `❯` character.
-
----
-
-## ⌨️ Shortcuts Reference
-
-| Shortcut | Action |
-| :--- | :--- |
-| **`Meta + Q`** | Close active window (Hyprland / i3 style) |
-| **`Alt + Space`** | Centered Launcher (Rofi / Spotlight search) |
-| **`Meta`** | Open Application Menu |
-| **`Meta + Left / Right`** | Tile window to Left / Right half |
-| **`Meta + Up / Down`** | Maximize / Restore window |
-| **`Meta + Shift + Arrows`** | Tile window to Screen Corners (quarters) |
-| **`Meta + T`** | Interactive Tiling Layout Editor (Plasma 6) |
-| **`Meta + Left Click Drag`** | Move window from anywhere |
-| **`Meta + Right Click Drag`**| Resize window from anywhere |
 
 ---
 
@@ -74,7 +64,7 @@ cd ~/workspace/xtHyprKde
 ./apply.sh
 ```
 
-### Full Reinstall / Setup
+### Full Setup
 ```bash
 ./install.sh
 ```

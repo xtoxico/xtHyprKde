@@ -1,13 +1,2 @@
 [General]
-order = steam
-rules = hypr_border_only
-count = 1
-
-[hypr_border_only]
-description = Border-Only (No Titlebars Hyprland)
-noborder = true
-noborderrule = 2
-types = 1
-wmclasscomplete = false
-wmclassmatch = 0
-
+Order=steam

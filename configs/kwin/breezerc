@@ -1,0 +1,11 @@
+[Common]
+OutlineCloseButton=false
+ShadowSize=ShadowSmall
+ShadowStrength=140
+
+[Windeco]
+ButtonSize=ButtonSmall
+DrawBackgroundGradient=false
+DrawBorderOnMaximizedWindows=false
+DrawSeparator=false
+DrawTitleBar=true
